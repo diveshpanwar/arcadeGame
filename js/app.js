@@ -47,13 +47,11 @@ var Player = function(x,y,speed) {
 
 Player.prototype.update = function() {
   //check for player reaching top of the canvas
-  if (this.y + 63 <= 0) {
+  if (this.y + 23 <= 0) {
           this.x = 202.5;
           this.y = 383;
           console.log('you Died!');
           this.updateScore();
-          ctx.fillStyle = 'white';
-          ctx.fillRect(0, 0, 505, 171);
       }
 
       // check if player reaches left, bottom, or right canvas boundary
@@ -125,5 +123,4 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-    console.log(allowedKeys[e.keyCode]);
 });
