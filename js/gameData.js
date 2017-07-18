@@ -98,7 +98,7 @@ $(function(){
     $("#playerName").html(pName);
     $("#pLevel").html(level);
     $("#pLives").html(player.lives);
-    $("#pScore").html(score);
+    $("#pScore").html(player.score);
     $("#canvas").removeClass("hideContainer");
     console.log(sprite);
     player.sprite = sprite;

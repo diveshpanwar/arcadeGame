@@ -40,7 +40,8 @@ var Player = function(x,y,speed) {
   this.x = x;
   this.y = y;
   this.speed = speed;
-  this.lives = 3;
+  this.lives = 10;
+  this.score = 0;
   this.sprite = 'images/char-boy.png';
 };
 
@@ -49,8 +50,9 @@ Player.prototype.update = function() {
   if (this.y + 63 <= 0) {
           this.x = 202.5;
           this.y = 383;
-          console.log('you made it!');
-
+          console.log('you Died!');
+          player.lives-=1;
+          $("#pLives").html(player.lives);
           ctx.fillStyle = 'white';
           ctx.fillRect(0, 0, 505, 171);
       }
