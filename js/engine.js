@@ -81,7 +81,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        // checkCollisions(); this function  is called in app.js
     }
 
     /* This is called by the update function and loops through all of the

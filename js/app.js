@@ -23,7 +23,7 @@ Enemy.prototype.update = function(dt) {
       this.y = Math.random() * 184 + 50;
       this.speed = Math.random() * 256;
     }
-
+//I am calling check Collisions here instead of in engine.js
     checkCollision(this);
 
 };
@@ -46,14 +46,6 @@ var Player = function(x,y,speed) {
 };
 
 Player.prototype.update = function() {
-  //check for player reaching top of the canvas
-  if (this.y + 23 <= 0) {
-          this.x = 202.5;
-          this.y = 383;
-          console.log('you Died!');
-          this.updateScore();
-      }
-
       // check if player reaches left, bottom, or right canvas boundary
       if (this.y > 383 ) {
           this.y = 383;
@@ -66,7 +58,7 @@ Player.prototype.update = function() {
       }
 };
 
-Player.prototype.updateScore = function() {
+Player.prototype.updateLives = function() {
   this.lives-=1;
   $("#pLives").html(player.lives);
 };
@@ -77,16 +69,16 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'left') {
-        player.x -= player.speed;
+        this.x -= this.speed;
     }
     if (keyPress == 'up') {
-        player.y -= player.speed - 20;
+        this.y -= this.speed - 20;
     }
     if (keyPress == 'right') {
-        player.x += player.speed;
+        this.x += this.speed;
     }
     if (keyPress == 'down') {
-        player.y += player.speed - 20;
+        this.y += this.speed - 20;
     }
   //  console.log('keyPress is: ' + keyPress);
 };
@@ -105,11 +97,21 @@ var checkCollision = function(enemy) {
     // check for collision between enemy and player
     if (
         player.y + 131 >= enemy.y + 90 && player.x + 25 <= enemy.x + 88 && player.y + 73 <= enemy.y + 135 && player.x + 76 >= enemy.x + 11) {
-        console.log('collided');
-        player.updateScore();
+        console.log('died due to collision');
+        player.updateLives();
         player.x = 202.5;
         player.y = 383;
     }
+
+    //check for player reaching top of the canvas and die
+    if (player.y + 23 <= 0) {
+            player.x = 202.5;
+            player.y = 383;
+            console.log('You are out of canvas and so you Died!');
+            player.updateLives();
+        }
+
+
 };
 
 // This listens for key presses and sends the keys to your
