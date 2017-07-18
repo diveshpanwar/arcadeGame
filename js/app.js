@@ -1,8 +1,10 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -14,6 +16,16 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x = (this.x + (this.speed*dt))%510;
+    //mod function ensures that the bug is positioned at the initial position once it goes outside the canvas scope
+    //update the speed and the y coordinate of the bug
+    if(this.x > 505) {
+      this.y = Math.random() * 184 + 50;
+      this.speed = Math.random() * 256;
+    }
+
+    checkCollision(this);
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -24,13 +36,77 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function(x,y,speed) {
+  this.x = x;
+  this.y = y;
+  this.speed = speed;
+  this.lives = 3;
+  this.sprite = 'images/char-boy.png';
+};
 
+Player.prototype.update = function() {
+  //check for player reaching top of the canvas
+  if (this.y + 63 <= 0) {
+          this.x = 202.5;
+          this.y = 383;
+          console.log('you made it!');
+
+          ctx.fillStyle = 'white';
+          ctx.fillRect(0, 0, 505, 171);
+      }
+
+      // check if player reaches left, bottom, or right canvas boundary
+      if (this.y > 383 ) {
+          this.y = 383;
+      }
+      if (this.x > 402.5) {
+          this.x = 402.5;
+      }
+      if (this.x < 2.5) {
+          this.x = 2.5;
+      }
+};
+
+
+Player.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.handleInput = function(keyPress) {
+    if (keyPress == 'left') {
+        player.x -= player.speed;
+    }
+    if (keyPress == 'up') {
+        player.y -= player.speed - 20;
+    }
+    if (keyPress == 'right') {
+        player.x += player.speed;
+    }
+    if (keyPress == 'down') {
+        player.y += player.speed - 20;
+    }
+    console.log('keyPress is: ' + keyPress);
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var allEnemies = [];
+var player = new Player(202.5, 383, 50);
+var score = 0;
+var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+allEnemies.push(enemy);
 
-
+//checkCollisions between an enemy and the player
+var checkCollision = function(enemy) {
+    // check for collision between enemy and player
+    if (
+        player.y + 131 >= enemy.y + 90 && player.x + 25 <= enemy.x + 88 && player.y + 73 <= enemy.y + 135 && player.x + 76 >= enemy.x + 11) {
+        console.log('collided');
+        player.x = 202.5;
+        player.y = 383;
+    }
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -43,4 +119,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    console.log(allowedKeys[e.keyCode]);
 });

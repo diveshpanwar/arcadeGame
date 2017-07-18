@@ -24,7 +24,7 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
+    canvas.id = 'canvas';
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -93,6 +93,7 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
+            checkCollision(enemy);
         });
         player.update();
     }
@@ -171,13 +172,20 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/char-horn-girl.png'
     ]);
-    Resources.onReady(init);
+    //Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
+
+     //making the init function global
+    global.init = init;
     global.ctx = ctx;
 })(this);

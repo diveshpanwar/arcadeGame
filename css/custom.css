@@ -1,0 +1,20 @@
+* {
+  font-family: 'Artifika', serif;
+  /*font-family: 'Lobster', cursive;*/
+}
+
+.text-thick {
+  font-weight: bold;
+}
+.text-big {
+  font-size: 60px;
+}
+
+#spriteO {
+  margin: auto auto;
+  display: block;
+}
+
+.hideContainer {
+  display: none;
+}
