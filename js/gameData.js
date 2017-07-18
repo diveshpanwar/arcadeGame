@@ -3,21 +3,21 @@ var game = {
     {
       "name":"Easy",
       "index": "0",
-      "bugs": 3,
+      "bugs": 2,
       "lives":0,
       "maxPoints": 300
     },
     {
       "name":"Medium",
       "index": "1",
-      "bugs": 5,
+      "bugs": 4,
       "lives":1,
       "maxPoints": 600
     },
     {
       "name":"Hard",
       "index": "2",
-      "bugs": 7,
+      "bugs": 6,
       "lives":2,
       "maxPoints": 900
     }

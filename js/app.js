@@ -51,8 +51,7 @@ Player.prototype.update = function() {
           this.x = 202.5;
           this.y = 383;
           console.log('you Died!');
-          player.lives-=1;
-          $("#pLives").html(player.lives);
+          this.updateScore();
           ctx.fillStyle = 'white';
           ctx.fillRect(0, 0, 505, 171);
       }
@@ -69,6 +68,10 @@ Player.prototype.update = function() {
       }
 };
 
+Player.prototype.updateScore = function() {
+  this.lives-=1;
+  $("#pLives").html(player.lives);
+};
 
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -87,7 +90,7 @@ Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'down') {
         player.y += player.speed - 20;
     }
-    console.log('keyPress is: ' + keyPress);
+  //  console.log('keyPress is: ' + keyPress);
 };
 
 // Now instantiate your objects.
@@ -105,6 +108,7 @@ var checkCollision = function(enemy) {
     if (
         player.y + 131 >= enemy.y + 90 && player.x + 25 <= enemy.x + 88 && player.y + 73 <= enemy.y + 135 && player.x + 76 >= enemy.x + 11) {
         console.log('collided');
+        player.updateScore();
         player.x = 202.5;
         player.y = 383;
     }
