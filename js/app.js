@@ -138,7 +138,7 @@ Enemy.prototype.update = function(dt) {
     //mod function ensures that the bug is positioned at the initial position once it goes outside the canvas scope
     //update the speed and the y coordinate of the bug
     if(this.x > 605) {
-      this.y = Math.random() * 184 + 50;
+      this.y = Math.random() * 184 + 100;
       this.speed = Math.random() * 256;
     }
 //I am calling check Collisions here instead of in engine.js

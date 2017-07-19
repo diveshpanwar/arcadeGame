@@ -35,6 +35,8 @@ $(function(){
         var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
         allEnemies.push(enemy);
       }
+        game.gameTime = 0;
+        game.startTime = Date.now();
       setInterval(game.renderTime, 1000);
       player.init(game.levels[levelIndex]);
     init();
