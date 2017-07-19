@@ -16,10 +16,10 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = (this.x + (this.speed*dt))%510;
+    this.x = (this.x + (this.speed*dt))%610;
     //mod function ensures that the bug is positioned at the initial position once it goes outside the canvas scope
     //update the speed and the y coordinate of the bug
-    if(this.x > 505) {
+    if(this.x > 605) {
       this.y = Math.random() * 184 + 50;
       this.speed = Math.random() * 256;
     }
@@ -47,11 +47,11 @@ var Player = function(x,y,speed) {
 
 Player.prototype.update = function() {
       // check if player reaches left, bottom, or right canvas boundary
-      if (this.y > 383 ) {
-          this.y = 383;
+      if (this.y > 463 ) {
+          this.y = 463;
       }
-      if (this.x > 402.5) {
-          this.x = 402.5;
+      if (this.x > 510.5) {
+          this.x = 510.5;
       }
       if (this.x < 2.5) {
           this.x = 2.5;

@@ -25,8 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
     canvas.id = 'canvas';
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = 608;
+    canvas.height = 707;
     $("#gameContainer").append(canvas);
   //  doc.body.appendChild(canvas);
 
@@ -126,6 +126,8 @@ var Engine = (function(global) {
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
          */
+         ctx.clearRect(0,0, canvas.width, canvas.height);
+
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
@@ -135,7 +137,7 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
 
