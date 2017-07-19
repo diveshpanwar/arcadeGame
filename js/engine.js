@@ -97,6 +97,10 @@ var Engine = (function(global) {
             checkCollision(enemy);
         });
         player.update();
+        Gems.createGems();
+        allGems.forEach(function(gem) {
+          gem.collisionDetection();
+        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -152,6 +156,10 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+         allGems.forEach(function(gem) {
+           gem.render();
+         });
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -177,6 +185,9 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
+        'images/gem-blue.png',
+        'images/gem-orange.png',
+        'images/gem-green.png',
         'images/char-cat-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
