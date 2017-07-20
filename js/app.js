@@ -116,6 +116,8 @@ var game = {
     });
     $("#start .col-md-6:first").append('<button class="btn btn-success form-group" id="startBtn">Start Game</select>');
     // $("#canvas").addClass("hideContainer");
+    // making canvas bit more responsive
+    $("#canvas").addClass("img-responsive");
     game.displayScore();
   },
   //display score table on the home screen
