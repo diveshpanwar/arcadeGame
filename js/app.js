@@ -118,6 +118,7 @@ var game = {
     // $("#canvas").addClass("hideContainer");
     // making canvas bit more responsive
     $("#canvas").addClass("img-responsive");
+    $("#canvas").addClass("mauto");
     game.displayScore();
   },
   //display score table on the home screen
