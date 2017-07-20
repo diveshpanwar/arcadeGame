@@ -13,6 +13,23 @@
     <link rel="stylesheet" href="css/custom.css">
   </head>
   <body>
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" id="winnerModal" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+           <button type="button" id="winnerModalClose" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <h2 class="modal-title" id="myModalLabel">You Won</h2>
+         </div>
+         <div class="modal-body">
+           <h3>Congratulations!</h3>
+         </div>
+         <div class="modal-footer">
+           <button type="button" id="winnerModalRestart" class="btn btn-default">Restart Game</button>
+           <button type="button" id="winnerModalSave" class="btn btn-primary">Save Details</button>
+         </div>
+       </div>
+   </div>
+</div>
     <div class="container-fluid">
       <h1 class="title text-center text-thick text-big">Arcade Game</h1>
       <div class="row" id="start">
@@ -30,16 +47,15 @@
       </div>
 
       <div class="row hideContainer" id="gameContainer">
-        <div class="col-md-3">
+        <div class="col-md-2 text-center" id="gameData1">
           <h3>Player:<span id="playerName"></span></h3>
-        </div>
-        <div class="col-md-3">
           <h3>Score:<span id="pScore"></span></h3>
         </div>
-        <div class="col-md-3">
-          <h3>Lives: <span id="pLives"></span></h3>
+        <div class="col-md-8 text-center" id="gameCanvas">
+
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2 text-center" id="gameData2">
+          <h3>Lives: <span id="pLives"></span></h3>
           <h3>Level: <span id="pLevel"></span></h3>
         </div>
       </div>

@@ -1,3 +1,6 @@
+// helping variable
+var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center" id="scoreTable"><h3 class="text-center text-thick">High Scores</h3><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
+var highScoreRow = '<tr><td>%name%</td><td>%score%</td><td>%level%</td></tr>';
 var game = {
   "numOfGems": 0,
   "startTime": Date.now(),
@@ -10,21 +13,21 @@ var game = {
       "index": "0",
       "bugs": 2,
       "lives":0,
-      "maxGems": 10
+      "maxGems": 2
     },
     {
       "name":"Medium",
       "index": "1",
       "bugs": 4,
       "lives":1,
-      "maxGems": 50
+      "maxGems": 4
     },
     {
       "name":"Hard",
       "index": "2",
       "bugs": 6,
       "lives":2,
-      "maxGems": 50
+      "maxGems": 6
     }
   ],
   "playerSprites": [
@@ -61,7 +64,46 @@ var game = {
   gemCreator : function() {
     var gemCreateInterval = window.setInterval(Gems.createGems, 1000);
   },
+  // reset game data
+  reset: function() {
+    game.numOfGems = 0;
+    game.startTime = Date.now();
+    game.gameTime = 0;
+    $("#gameData1 h3:last").remove();
+    $("#gameData2 h3:last").remove();
+  },
+  startGame  : function() {
+    var pName = $("#pName").val();
+    var sprite = $("#pSprite option:selected").val();
+    var level = $("#level option:selected").text();
+    var levelIndex = $("#level option:selected").val();
+    if(pName == null || pName == "") {
+      alert("Please Enter a Player Name");
+      return;
+    }
 
+    $("#start").addClass("hideContainer");
+    $("#gameContainer").removeClass("hideContainer");
+    $("#playerName").html(pName);
+    $("#pLevel").html(level);
+    $("#pLives").html(player.lives);
+    $("#pScore").html(player.score);
+    // $("#canvas").removeClass("hideContainer");
+    game.displayGameData();
+    //console.log(sprite);
+    player.name = pName;
+    player.sprite = sprite;
+      var numBugs = game.levels[levelIndex].bugs;
+      for(var i = 0; i<numBugs-1; i++) {
+        var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+        allEnemies.push(enemy);
+      }
+        game.gameTime = 0;
+        game.startTime = Date.now();
+      setInterval(game.renderTime, 1000);
+      player.init(game.levels[levelIndex]);
+    init();
+  },
   display: function(){
     $("#start .col-md-6:first").append('<input class="form-control form-group" id="pName" placeholder="Player Name">');
     $("#start .col-md-6:first").append('<select class="form-control form-group" id="level"></select>');
@@ -73,10 +115,23 @@ var game = {
       $("#start .col-md-6:first select:last").append('<option value="'+sprite.sprite+'">'+sprite.name+'</option>');
     });
     $("#start .col-md-6:first").append('<button class="btn btn-success form-group" id="startBtn">Start Game</select>');
-    $("#canvas").addClass("hideContainer");
+    // $("#canvas").addClass("hideContainer");
+    game.displayScore();
   },
+  //display score table on the home screen
+  displayScore: function() {
+    $("#scoreTable").remove("#scoreTable");
+    if(gameScoreDetails.length != 0) {
+      $("#start").append(highScoreTable);
+      gameScoreDetails.forEach(function(detail) {
+        $("#scoreTable tbody").append(highScoreRow.replace('%name%',detail.pName).replace('%score%',detail.hScore).replace('%level%',detail.level));
+      });
+    }
+  },
+
   displayGameData : function() {
-    $("#gameContainer").append('<div calss="row text-center"><div class="col-md-3"><h3>Time:<span id="gameTime"></span></h3></div></div>');
+    $("#gameData1").append('<h3>Time:<span id="gameTime"></span></h3>');
+    $("#gameData2").append('<h3>Gems Collected:<span id="gemsCollected">0</span></h3>');
   }
 };
 
@@ -173,6 +228,15 @@ Player.prototype.init = function(gameObj) {
   this.level = gameObj.name;
   this.maxGems = gameObj.maxGems;
 };
+//reset player details
+Player.prototype.reset = function() {
+  this.name = "XYZ";
+  this.score = 0;
+  this.gemsCollected = 0;
+  this.lives=10;
+  this.x = 202.5;
+  this.y = 383;
+};
 
 Player.prototype.update = function() {
       // check if player reaches left, bottom, or right canvas boundary
@@ -197,15 +261,22 @@ Player.prototype.updateLives = function() {
 
 Player.prototype.updateScore = function() {
   player.gemsCollected+=1;
+  $("#gemsCollected").html(player.gemsCollected);
   game.numOfGems-=1;
   if( this.gemsCollected >= this.maxGems) {
-    alert("You Won");
-    var data = {};
-    data.pName = player.name;
-    data.hScore = player.score;
-    data.level = player.level;
-    gameScoreDetails.push(data);
+  //  alert("You Won");
+  $("#start").removeClass("hideContainer");
+  $("#gameContainer").addClass("hideContainer");
+  $('#winnerModal').modal('show');
   }
+};
+
+Player.prototype.saveScore = function() {
+  var data = {};
+  data.pName = player.name;
+  data.hScore = player.score;
+  data.level = player.level;
+  gameScoreDetails.push(data);
 };
 
 Player.prototype.render = function() {

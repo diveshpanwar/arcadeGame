@@ -18,3 +18,8 @@
 .hideContainer {
   display: none;
 }
+
+/*set top margin*/
+.mt {
+  margin-top: 10px;
+}

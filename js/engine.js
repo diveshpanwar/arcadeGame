@@ -27,7 +27,7 @@ var Engine = (function(global) {
     canvas.id = 'canvas';
     canvas.width = 608;
     canvas.height = 707;
-    $("#gameContainer").append(canvas);
+    $("#gameContainer #gameCanvas").append(canvas);
   //  doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself

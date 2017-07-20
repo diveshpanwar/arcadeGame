@@ -17,9 +17,9 @@
     <![endif]-->
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container">
       <h1 class="title text-center text-thick text-big">Arcade Game</h1>
-      <div class="row" id="start">
+      <div class="row text-center" id="start">
         <div class="col-md-6 text-center">
           <h2 class="text-center">Game Settings</h2>
           <hr>
@@ -34,18 +34,21 @@
       </div>
 
       <div class="row hideContainer" id="gameContainer">
-        <div class="col-md-3">
-          <h3>Player:<span id="playerName"></span></h3>
+        <div class="col-md-2 text-center">
+          <h2>Column 1</h2>
+              <h3>Player:<span id="playerName"></span></h3>
+              <h3>Score:<span id="pScore"></span></h3>
+
         </div>
-        <div class="col-md-3">
-          <h3>Score:<span id="pScore"></span></h3>
+        <div class="col-md-8">
+          <h2>Column 2</h2>
         </div>
-        <div class="col-md-3">
-          <h3>Lives: <span id="pLives"></span></h3>
+        <div class="col-md-2 text-center">
+          <h2>Column 3</h2>
+            <h3>Lives: <span id="pLives"></span></h3>
+            <h3>Level: <span id="pLevel"></span></h3>
         </div>
-        <div class="col-md-3">
-          <h3>Level: <span id="pLevel"></span></h3>
-        </div>
+
       </div>
     </div>
 
@@ -53,9 +56,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+    <script src="../js/resources.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/engine.js"></script>
     <script src="../js/gameData.js" charset="utf-8"></script>
   </body>
 </html>
