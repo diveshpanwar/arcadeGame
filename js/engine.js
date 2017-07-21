@@ -101,6 +101,10 @@ var Engine = (function(global) {
         allGems.forEach(function(gem) {
           gem.collisionDetection();
         });
+
+        allLives.forEach(function(live) {
+          live.checkLifeCollision();
+        });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -160,6 +164,11 @@ var Engine = (function(global) {
            gem.render();
          });
 
+         allLives.forEach(function(live) {
+           live.render();
+         });
+
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -191,7 +200,8 @@ var Engine = (function(global) {
         'images/char-cat-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/char-horn-girl.png'
+        'images/char-horn-girl.png',
+        'images/Heart.png'
     ]);
     //Resources.onReady(init);
 

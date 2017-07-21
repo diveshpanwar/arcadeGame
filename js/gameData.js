@@ -17,13 +17,12 @@ $(function(){
     $("#winnerModalSave").click(function() {
       player.saveScore();
       game.displayScore();
-      // code already executed when the modal iis displayed
-      // $("#start").removeClass("hideContainer");
-      // $("#gameContainer").addClass("hideContainer");
       $("#winnerModal").modal('hide');
       game.reset();
       player.reset();
-      allEnemies.length=1;//reset the length of the enemy array
+      allEnemies.length = 1;//reset the length of the enemy array
+      allGems.length = 0;
+      game.numOfGems = 0;
     });
 
     $("#winnerModalRestart").click(function() {
@@ -31,6 +30,8 @@ $(function(){
       game.reset();
       player.reset();
       allEnemies.length=1;//reset the length of the enemy array
+      allGems.length = 0;
+      game.numOfGems = 0;
       game.startGame();
     });
 
@@ -38,6 +39,8 @@ $(function(){
       game.reset();
       player.reset();
       allEnemies.length=1;//reset the length of the enemy array
+      allGems.length = 0;
+      game.numOfGems = 0;
     });
 
 });

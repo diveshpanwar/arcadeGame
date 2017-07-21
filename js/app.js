@@ -12,21 +12,24 @@ var game = {
       "name":"Easy",
       "index": "0",
       "bugs": 2,
-      "lives":0,
-      "maxGems": 2
+      "lives":4,
+      "addLives":0,
+      "maxGems": 6
     },
     {
       "name":"Medium",
       "index": "1",
       "bugs": 4,
-      "lives":1,
+      "lives":6,
+      "addLives":1,
       "maxGems": 4
     },
     {
       "name":"Hard",
       "index": "2",
       "bugs": 6,
-      "lives":2,
+      "lives":8,
+      "addLives":2,
       "maxGems": 6
     }
   ],
@@ -69,6 +72,7 @@ var game = {
     game.numOfGems = 0;
     game.startTime = Date.now();
     game.gameTime = 0;
+    game.nextGemCreateTime = 0;
     $("#gameData1 h3:last").remove();
     $("#gameData2 h3:last").remove();
   },
@@ -82,12 +86,6 @@ var game = {
       return;
     }
 
-    $("#start").addClass("hideContainer");
-    $("#gameContainer").removeClass("hideContainer");
-    $("#playerName").html(pName);
-    $("#pLevel").html(level);
-    $("#pLives").html(player.lives);
-    $("#pScore").html(player.score);
     // $("#canvas").removeClass("hideContainer");
     game.displayGameData();
     //console.log(sprite);
@@ -103,6 +101,12 @@ var game = {
       setInterval(game.renderTime, 1000);
       player.init(game.levels[levelIndex]);
     init();
+    $("#start").addClass("hideContainer");
+    $("#gameContainer").removeClass("hideContainer");
+    $("#playerName").html(pName);
+    $("#pLevel").html(level);
+    $("#pLives").html(player.lives);
+    $("#pScore").html(player.score);
   },
   display: function(){
     $("#start .col-md-6:first").append('<input class="form-control form-group" id="pName" placeholder="Player Name">');
@@ -181,6 +185,9 @@ var Enemy = function(x,y,speed) {
     this.x = x;
     this.y = y;
     this.speed = speed;
+    if(this.speed<70) {
+      this.speed+=70;
+    }
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -192,6 +199,9 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if(this.speed<70) {
+      this.speed+=70;
+    }
     this.x = (this.x + (this.speed*dt))%610;
     //mod function ensures that the bug is positioned at the initial position once it goes outside the canvas scope
     //update the speed and the y coordinate of the bug
@@ -218,25 +228,28 @@ var Player = function(x,y) {
   this.x = x;
   this.y = y;
   this.gemsCollected = 0;
-  this.lives = 10;
+  this.lives = 4;
   this.playerYOffset = -30;
   this.playerXOffset = 20;
   this.score = 0;
   this.gameBoardX = 3;
   this.gameBoardY = 7;
   this.sprite = 'images/char-boy.png';
+  this.addLives = 0;
 };
 
 Player.prototype.init = function(gameObj) {
   this.level = gameObj.name;
   this.maxGems = gameObj.maxGems;
+  this.lives = gameObj.lives;
+  this.addLives = gameObj.addLives;
 };
 //reset player details
 Player.prototype.reset = function() {
   this.name = "XYZ";
   this.score = 0;
   this.gemsCollected = 0;
-  this.lives=10;
+  this.addLives = 0;
   this.x = 202.5;
   this.y = 383;
 };
@@ -252,23 +265,36 @@ Player.prototype.update = function() {
       if (this.x < 2.5) {
           this.x = 2.5;
       }
-
       $("#pScore").html(player.score);
 
 };
 
 Player.prototype.updateLives = function() {
   this.lives-=1;
+  if(this.lives<2 && this.addLives>0) {
+    var lifeLine = new LifeLines();
+    this.addLives--;
+    allLives.push(lifeLine);
+  }
+  if(this.lives<0) {
+    $("#myModalLabel").html("You Loose!");
+    $(".modal-body h3").html("Better Luck Next Time");
+    $("#winnerModalSave").addClass("hideContainer");
+    $("#start").removeClass("hideContainer");
+    $("#gameContainer").addClass("hideContainer");
+    $('#winnerModal').modal('show');
+  }
   $("#pLives").html(player.lives);
 };
 
 Player.prototype.updateScore = function() {
-  player.gemsCollected+=1;
+  this.gemsCollected+=1;
   $("#gemsCollected").html(player.gemsCollected);
   game.numOfGems-=1;
   if( this.gemsCollected >= this.maxGems) {
   //  alert("You Won");
   $("#start").removeClass("hideContainer");
+  $("#winnerModalSave").removeClass("hideContainer");
   $("#gameContainer").addClass("hideContainer");
   $('#winnerModal').modal('show');
   }
@@ -349,24 +375,44 @@ var Gems = function() {
   //default sprite image Orange Gem
   this.sprite = 'images/gem-orange.png';
   this.gemValue = 2;
-  var randGem = Math.floor(Math.random() * (3 - 0)) + 0;
+  var randGem = Math.floor(Math.random() * 3);
   if( randGem == 0) {
-    this.sprite = 'images/gem-orange.png';
     this.gemValue = 2;
+    this.sprite = 'images/gem-orange.png';
   } else if(randGem == 1) {
-    this.sprite = 'images/gem-blue.png';
     this.gemValue = 4;
-  } else if( randGem == 2) {
-    this.sprite = 'images/gem-green.png';
+    this.sprite = 'images/gem-blue.png';
+  } else if(randGem == 2) {
     this.gemValue = 6;
+    this.sprite = 'images/gem-green.png';
   }
   // Position
-  this.boardYPos = Math.floor((Math.random() * 10) / 3 ) + 2; // Generate number between 2 and 5
-  this.boardXPos = Math.floor((Math.random() * 10) / 2 ) + 1; // Generate number between 1 and 5
-  this.x = gameBoard.calcXPosition(this.boardXPos, this.spriteXOffset);
-  this.y = gameBoard.calcYPosition(this.boardYPos, this.spriteYOffset);
+  //if two gems are placed on the same location
+        this.boardYPos = Math.floor((Math.random() * 10) / 3 ) + 2; // Generate number between 2 and 5
+        this.boardXPos = Math.floor((Math.random() * 10) / 2 ) + 2; // Generate number between 1 and 6
+        // uncomment below code if number of gems is greater than 1 at a particular interval of time
+        // var collision = this.collidingGems();
+        // console.log(collision);
+        // while(collision > 0) {
+        //   this.boardYPos = Math.floor((Math.random() * 10) / 3 ) + 3; // Generate number between 2 and 6
+        //   this.boardXPos = Math.floor((Math.random() * 10) / 2 ) + 1; // Generate number between 1 and 5
+        //   collision = this.collidingGems();
+        //   console.log(collision);
+        // }
+          this.x = gameBoard.calcXPosition(this.boardXPos, this.spriteXOffset);
+          this.y = gameBoard.calcYPosition(this.boardYPos, this.spriteYOffset);
 };
-
+//check gems for collisions with each other
+Gems.prototype.collidingGems = function() {
+  var result = 0;
+  allGems.forEach(function(gem) {
+    if ((this.boardXPos === gem.boardXPos) && (this.boardYPos === gem.boardYPos)) {
+      result+=1;
+    }else {
+    }
+  });
+  return result;
+};
 // Render for each gem on the board
 Gems.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), gameBoard.calcXPosition(this.boardXPos, this.spriteXOffset), gameBoard.calcYPosition(this.boardYPos, this.spriteYOffset));
@@ -386,23 +432,45 @@ Gems.prototype.collisionDetection = function() {
 };
 
 Gems.createGems = function() {
-  if(game.numOfGems<3) {
+  //generate one gem at a time if number of gems > 1 then call collidingGems() function
+  if(game.numOfGems<1) {
     if (Math.floor(game.gameTime) > game.nextGemCreateTime ) { // Check if it's time to create a new gem.
-
-				var gemsToCreate = Math.round((Math.random() * 10) / 5) + 1; // Generate # between 1-3
-
-				for (var i = 1; i <= gemsToCreate; i++) {
 					var gem = new Gems(); // Create gem
               game.numOfGems+=1;
 	        		allGems.push(gem);
-				}
-
 	        	game.nextGemCreateTime =  Math.floor(game.gameTime) + Math.round((Math.random() * 10) / 3); // create gem every 0-3 seconds
 	   		}
   }
 };
+
+var LifeLines = function () {
+  this.spriteYOffset = 50;
+  this.spriteXOffset = 85;
+  this.sprite = "images/Heart.png";
+  this.boardYPos = Math.floor((Math.random() * 10) / 3 ) + 2; // Generate number between 2 and 5
+  this.boardXPos = Math.floor((Math.random() * 10) / 2 ) + 2; // Generate number between 1 and 6
+  this.x = gameBoard.calcXPosition(this.boardXPos, this.spriteXOffset);
+  this.y = gameBoard.calcYPosition(this.boardYPos, this.spriteYOffset);
+};
+
+LifeLines.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), gameBoard.calcXPosition(this.boardXPos, this.spriteXOffset), gameBoard.calcYPosition(this.boardYPos, this.spriteYOffset));
+};
+
+LifeLines.prototype.checkLifeCollision = function() {
+  player.gameBoardX = Math.floor((player.x + player.playerXOffset)/gameBoard.stats.blockSizeX)+1;
+  player.gameBoardY = Math.floor((player.y + player.playerYOffset)/gameBoard.stats.blockSizeY)+2;
+    if (player.gameBoardX == this.boardXPos && player.gameBoardY == this.boardYPos) {
+        this.boardXPos = -1;
+        this.boardYPos = -1;
+        player.lives += 1; // update the player life by 1
+        $("#pLives").html(player.lives);//display updated lifes
+    }
+};
+
 var allEnemies = [];
 var allGems = [];
+var allLives = [];
 var gem1 = new Gems();
 allGems.push(gem1);
 game.numOfGems+=1;
