@@ -1,12 +1,14 @@
 // helping variable
 var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center" id="scoreTable"><h3 class="text-center text-thick">High Scores</h3><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
 var highScoreRow = '<tr><td>%name%</td><td>%score%</td><td>%level%</td></tr>';
+//game object to store basic game data
 var game = {
   "numOfGems": 0,
   "startTime": Date.now(),
   "gameTime": 0,
   "nextGemCreateTime": 0,
   "allGems":[],
+  // various levels and their configurations
   "levels": [
     {
       "name":"Easy",
@@ -56,14 +58,16 @@ var game = {
     }
   ],
   gameTimeCounter : function() {
-    // Game time is tracked in  seconds
+    // it tracks the time of the game in seconds
     game.gameTime = (Date.now() - game.startTime) / 1000;
   },
 
+  //function to display the game time on the screen
   renderTime: function() {
     $("#gameTime").html(Math.floor(game.gameTime));
   },
 
+  //set time interval for the creation of the next gem especially if more than one gem is displayed simultaneously
   gemCreator : function() {
     var gemCreateInterval = window.setInterval(Gems.createGems, 1000);
   },
@@ -76,6 +80,7 @@ var game = {
     $("#gameData1 h3:last").remove();
     $("#gameData2 h3:last").remove();
   },
+  //initates the game by setting the values
   startGame  : function() {
     var pName = $("#pName").val();
     var sprite = $("#pSprite option:selected").val();
@@ -86,12 +91,11 @@ var game = {
       return;
     }
 
-    // $("#canvas").removeClass("hideContainer");
     game.displayGameData();
-    //console.log(sprite);
     player.name = pName;
     player.sprite = sprite;
       var numBugs = game.levels[levelIndex].bugs;
+      //create bugs depending on the levels
       for(var i = 0; i<numBugs-1; i++) {
         var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
         allEnemies.push(enemy);
@@ -99,15 +103,18 @@ var game = {
         game.gameTime = 0;
         game.startTime = Date.now();
       setInterval(game.renderTime, 1000);
+      //set player properties according to the level and the data received
       player.init(game.levels[levelIndex]);
-    init();
-    $("#start").addClass("hideContainer");
-    $("#gameContainer").removeClass("hideContainer");
-    $("#playerName").html(pName);
-    $("#pLevel").html(level);
-    $("#pLives").html(player.lives);
-    $("#pScore").html(player.score);
+      init();
+      //display main canvas and relevant data
+      $("#start").addClass("hideContainer");
+      $("#gameContainer").removeClass("hideContainer");
+      $("#playerName").html(pName);
+      $("#pLevel").html(level);
+      $("#pLives").html(player.lives);
+      $("#pScore").html(player.score);
   },
+  //user settings
   display: function(){
     $("#start .col-md-6:first").append('<input class="form-control form-group" id="pName" placeholder="Player Name">');
     $("#start .col-md-6:first").append('<select class="form-control form-group" id="level"></select>');
@@ -135,13 +142,13 @@ var game = {
       });
     }
   },
-
+  //display time and the gems collected
   displayGameData : function() {
     $("#gameData1").append('<h3>Time:<span id="gameTime"></span></h3>');
     $("#gameData2").append('<h3>Gems Collected:<span id="gemsCollected">0</span></h3>');
   }
 };
-
+//store the winner names at run time
 var gameScoreDetails = [
     {
       "pName": "Divesh",
@@ -150,7 +157,7 @@ var gameScoreDetails = [
   }
 ];
 
-// Game Board settings. Could be used for larger boards with other code modifications
+// Game Board to use blocks for the positioning of the gems and lives works fine even if the gameBoard settings change
 var gameBoard = {
     "settings" : {
         "widthInBlocks" : 6,
@@ -162,21 +169,15 @@ var gameBoard = {
     }
 };
 
-// Turns Y grid co-ords into pixels
+// Converts the Y block number to Y coordinate
 gameBoard.calcYPosition = function(ypos, yOffset) {
     return ypos * gameBoard.stats.blockSizeY  - yOffset;
 };
 
-// Turns X grid co-ords into pixels
+// Converts the X block number to X coordinate
 gameBoard.calcXPosition = function(xpos, xOffset) {
     return xpos * gameBoard.stats.blockSizeX  - xOffset;
 };
-
-// Turns X pixels into grid co-ords
-gameBoard.calcXPosPixelsToGrid = function(xposPixels, xOffset) {
-    return Math.round((xposPixels + xOffset) / gameBoard.stats.blockSizeX);
-};
-
 
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
@@ -195,27 +196,27 @@ var Enemy = function(x,y,speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+  Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    // prevent bugs from moving at very slow speed
     if(this.speed<70) {
       this.speed+=70;
     }
-    this.x = (this.x + (this.speed*dt))%610;
     //mod function ensures that the bug is positioned at the initial position once it goes outside the canvas scope
+    this.x = (this.x + (this.speed*dt))%610;
     //update the speed and the y coordinate of the bug
     if(this.x > 605) {
       this.y = Math.random() * 184 + 100;
       this.speed = Math.random() * 256;
     }
-//I am calling check Collisions here instead of in engine.js
-    checkCollision(this);
-
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+    //calculate the game time
     game.gameTimeCounter();
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -235,15 +236,17 @@ var Player = function(x,y) {
   this.gameBoardX = 3;
   this.gameBoardY = 7;
   this.sprite = 'images/char-boy.png';
-  this.addLives = 0;
+  this.addLives = 0; //additional lives for a player
 };
 
+//update player properties according to the game object passed
 Player.prototype.init = function(gameObj) {
   this.level = gameObj.name;
   this.maxGems = gameObj.maxGems;
   this.lives = gameObj.lives;
   this.addLives = gameObj.addLives;
 };
+
 //reset player details
 Player.prototype.reset = function() {
   this.name = "XYZ";
@@ -251,11 +254,11 @@ Player.prototype.reset = function() {
   this.gemsCollected = 0;
   this.addLives = 0;
   this.x = 202.5;
-  this.y = 383;
+  this.y = 399;
 };
 
 Player.prototype.update = function() {
-      // check if player reaches left, bottom, or right canvas boundary
+      // check if player reaches bottom, right or left of canvas boundary
       if (this.y > 463 ) {
           this.y = 463;
       }
@@ -265,10 +268,8 @@ Player.prototype.update = function() {
       if (this.x < 2.5) {
           this.x = 2.5;
       }
-      $("#pScore").html(player.score);
-
 };
-
+//update the lives of the player and generate the life lines if the level allows also checks for the game Over Status
 Player.prototype.updateLives = function() {
   this.lives-=1;
   if(this.lives<2 && this.addLives>0) {
@@ -286,20 +287,20 @@ Player.prototype.updateLives = function() {
   }
   $("#pLives").html(player.lives);
 };
-
+// updates the score of the player and also checks if the player has won or not
 Player.prototype.updateScore = function() {
+  $("#pScore").html(player.score);
   this.gemsCollected+=1;
   $("#gemsCollected").html(player.gemsCollected);
   game.numOfGems-=1;
   if( this.gemsCollected >= this.maxGems) {
-  //  alert("You Won");
   $("#start").removeClass("hideContainer");
   $("#winnerModalSave").removeClass("hideContainer");
   $("#gameContainer").addClass("hideContainer");
   $('#winnerModal').modal('show');
   }
 };
-
+// If player chooses to save his score than save it
 Player.prototype.saveScore = function() {
   var data = {};
   data.pName = player.name;
@@ -307,11 +308,11 @@ Player.prototype.saveScore = function() {
   data.level = player.level;
   gameScoreDetails.push(data);
 };
-
+//render the playeer on the canvas
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
+//handle the movement of the player on the screen
 Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'left') {
         this.x -= 100;
@@ -325,29 +326,24 @@ Player.prototype.handleInput = function(keyPress) {
     if (keyPress == 'down') {
         this.y += 80;
     }
-  //  console.log('keyPress is: ' + keyPress);
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
 //checkCollisions between an enemy and the player
-var checkCollision = function(enemy) {
+Player.prototype.checkCollision = function(enemy) {
     // check for collision between enemy and player
-    if (player.y + 131 >= enemy.y + 90 && player.x + 25 <= enemy.x + 88 && player.y + 73 <= enemy.y + 135 && player.x + 76 >= enemy.x + 11) {
+    if (this.y + 131 >= enemy.y + 90 && this.x + 20 <= enemy.x + 88 && this.y + 73 <= enemy.y + 140 && this.x + 71 >= enemy.x + 11) {
         console.log('died due to collision');
-        player.updateLives();
-        player.x = 202.5;
-        player.y = 383;
+        this.updateLives();
+        this.x = 202.5;
+        this.y = 399;
     }
 
     //check for player reaching top of the canvas and die
-    if (player.y + 23 <= 0) {
-            player.x = 202.5;
-            player.y = 383;
+    if (this.y + 23 <= 0) {
+            this.x = 202.5;
+            this.y = 399;
             console.log('You are out of canvas and so you Died!');
-            player.updateLives();
+            this.updateLives();
         }
 
 
@@ -419,7 +415,7 @@ Gems.prototype.render = function() {
 };
 
 // collision detection passed to each gem
-Gems.prototype.collisionDetection = function() {
+Gems.prototype.checkCollision = function() {
   // Checks if player ha collided with a gem
   player.gameBoardX = Math.floor((player.x + player.playerXOffset)/gameBoard.stats.blockSizeX)+1;
   player.gameBoardY = Math.floor((player.y + player.playerYOffset)/gameBoard.stats.blockSizeY)+2;
@@ -443,6 +439,7 @@ Gems.createGems = function() {
   }
 };
 
+//additional lives for medium level and hard level
 var LifeLines = function () {
   this.spriteYOffset = 50;
   this.spriteXOffset = 85;
@@ -457,7 +454,7 @@ LifeLines.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), gameBoard.calcXPosition(this.boardXPos, this.spriteXOffset), gameBoard.calcYPosition(this.boardYPos, this.spriteYOffset));
 };
 
-LifeLines.prototype.checkLifeCollision = function() {
+LifeLines.prototype.checkCollision = function() {
   player.gameBoardX = Math.floor((player.x + player.playerXOffset)/gameBoard.stats.blockSizeX)+1;
   player.gameBoardY = Math.floor((player.y + player.playerYOffset)/gameBoard.stats.blockSizeY)+2;
     if (player.gameBoardX == this.boardXPos && player.gameBoardY == this.boardYPos) {
@@ -468,13 +465,16 @@ LifeLines.prototype.checkLifeCollision = function() {
     }
 };
 
+// Now instantiate your objects.
+// Place all enemy objects in an array called allEnemies
+// Place the player object in a variable called player
 var allEnemies = [];
 var allGems = [];
 var allLives = [];
 var gem1 = new Gems();
 allGems.push(gem1);
 game.numOfGems+=1;
-var player = new Player(202.5, 383);
+var player = new Player(202.5, 399);
 var score = 0;
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 allEnemies.push(enemy);

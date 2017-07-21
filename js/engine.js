@@ -27,8 +27,8 @@ var Engine = (function(global) {
     canvas.id = 'canvas';
     canvas.width = 608;
     canvas.height = 707;
+    // appending the canvas to the gameCanvas div
     $("#gameContainer #gameCanvas").append(canvas);
-  //  doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -81,7 +81,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions(); this function  is called in app.js
+        // checkCollisions(); this function  is called below
     }
 
     /* This is called by the update function and loops through all of the
@@ -94,16 +94,18 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
-            checkCollision(enemy);
-        });
-        player.update();
-        Gems.createGems();
-        allGems.forEach(function(gem) {
-          gem.collisionDetection();
+            player.checkCollision(enemy);
         });
 
+        player.update();
+        //call createGems function
+        Gems.createGems();
+        allGems.forEach(function(gem) {
+          gem.checkCollision();
+        });
+        //collision of the player with the heart
         allLives.forEach(function(live) {
-          live.checkLifeCollision();
+          live.checkCollision();
         });
     }
 
