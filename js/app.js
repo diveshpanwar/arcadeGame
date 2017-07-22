@@ -296,6 +296,8 @@ Player.prototype.updateScore = function() {
   game.numOfGems-=1;
   if( this.gemsCollected >= this.maxGems) {
   $("#start").removeClass("hideContainer");
+  $("#myModalLabel").html("You Won");
+  $(".modal-body h3").html("Congratulations!");
   $("#winnerModalSave").removeClass("hideContainer");
   $("#gameContainer").addClass("hideContainer");
   $('#winnerModal').modal('show');
