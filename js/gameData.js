@@ -43,4 +43,8 @@ $(function(){
       game.numOfGems = 0;
     });
 
+    $("#instructions").click(function() {
+      $("#instructionsModal").modal('show');
+    });
+
 });

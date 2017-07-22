@@ -126,6 +126,7 @@ var game = {
       $("#start .col-md-6:first select:last").append('<option value="'+sprite.sprite+'">'+sprite.name+'</option>');
     });
     $("#start .col-md-6:first").append('<button class="btn btn-success form-group" id="startBtn">Start Game</select>');
+    $("#start .col-md-6:first").append('<br><a class="text-center text-success cursor" id="instructions">View Instructions</a>');
     // $("#canvas").addClass("hideContainer");
     // making canvas bit more responsive
     $("#canvas").addClass("img-responsive");
