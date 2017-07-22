@@ -87,3 +87,10 @@ body {
 .bs-callout-info {
     border-left-color: #5bc0de;
 }
+.borderBottom {
+  border: 4px solid;
+    border-bottom-color: #f0ad4e;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
