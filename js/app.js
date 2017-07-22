@@ -1,5 +1,5 @@
 // helping variable
-var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center" id="scoreTable"><h4 class="text-center text-thick">High Scores</h4><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
+var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center bs-callout bs-callout-primary" id="scoreTable"><h4 class="text-center text-thick">High Scores</h4><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
 var highScoreRow = '<tr><td>%name%</td><td>%score%</td><td>%level%</td></tr>';
 //game object to store basic game data
 var game = {
