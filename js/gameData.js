@@ -1,6 +1,5 @@
 $(function(){
   game.display();
-
   $("#pSprite").change(function(){
     $("#spriteO").attr("src",$("#pSprite option:selected").val());
   });
@@ -25,7 +24,7 @@ $(function(){
       allLives.length = 0;
       game.numOfGems = 0;
     });
-
+//if restart game button is clicked
     $("#winnerModalRestart").click(function() {
       $("#winnerModal").modal('hide');
       game.reset();
@@ -36,7 +35,7 @@ $(function(){
       game.numOfGems = 0;
       game.startGame();
     });
-
+//modal is closed
     $("#winnerModalClose").click(function() {
       game.reset();
       player.reset();
@@ -45,11 +44,11 @@ $(function(){
       allLives.length = 0;
       game.numOfGems = 0;
     });
-
+//if view instructions is clicked
     $("#instructions").click(function() {
       $("#instructionsModal").modal('show');
     });
-
+//if mouse is clicked inside the canvas
     $("#canvas").mousedown(function (e) {
       //mouse handling events for devices with smaller screens only
       if(window.innerWidth < 992){
