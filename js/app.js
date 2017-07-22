@@ -1,5 +1,5 @@
 // helping variable
-var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center" id="scoreTable"><h3 class="text-center text-thick">High Scores</h3><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
+var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center" id="scoreTable"><h4 class="text-center text-thick">High Scores</h4><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
 var highScoreRow = '<tr><td>%name%</td><td>%score%</td><td>%level%</td></tr>';
 //game object to store basic game data
 var game = {
@@ -77,8 +77,8 @@ var game = {
     game.startTime = Date.now();
     game.gameTime = 0;
     game.nextGemCreateTime = 0;
-    $("#gameData1 h3:last").remove();
-    $("#gameData2 h3:last").remove();
+    $("#gameData1 h4:last").remove();
+    $("#gameData2 h4:last").remove();
   },
   //initates the game by setting the values
   startGame  : function() {
@@ -145,8 +145,8 @@ var game = {
   },
   //display time and the gems collected
   displayGameData : function() {
-    $("#gameData1").append('<h3>Time:<span id="gameTime"></span></h3>');
-    $("#gameData2").append('<h3>Gems Collected:<span id="gemsCollected">0</span></h3>');
+    $("#gameData1").append('<h4>Time:<span id="gameTime"></span></h4>');
+    $("#gameData2").append('<h4>Gems Collected:<span id="gemsCollected">0</span></h4>');
   }
 };
 //store the winner names at run time
