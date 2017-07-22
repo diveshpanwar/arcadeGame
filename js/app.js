@@ -387,7 +387,6 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-    player.handleMouseInput(e);
 });
 
 //gems

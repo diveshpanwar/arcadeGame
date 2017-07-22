@@ -48,7 +48,11 @@ $(function(){
     });
 
     $("#canvas").mousedown(function (e) {
-      player.handleMouseInput(e);
-        });
+      //mouse handling events for devices with smaller screens only
+      if(window.innerWidth < 992){
+        console.log(window.innerWidth);
+        player.handleMouseInput(e);
+      }
+    });
 
 });
