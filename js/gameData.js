@@ -47,4 +47,8 @@ $(function(){
       $("#instructionsModal").modal('show');
     });
 
+    $("#canvas").mousedown(function (e) {
+      player.handleMouseInput(e);
+        });
+
 });

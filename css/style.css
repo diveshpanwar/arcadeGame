@@ -35,3 +35,13 @@ body {
 .cursor {
   cursor: pointer;
 }
+
+@media only screen and (max-width: 480px) {
+  .text-big {
+    font-size: 30px;
+  }
+
+  #start h2 {
+    font-size: 25px;
+  }
+}

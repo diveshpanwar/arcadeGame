@@ -329,6 +329,32 @@ Player.prototype.handleInput = function(keyPress) {
     }
 };
 
+Player.prototype.handleMouseInput = function(e) {
+  var height = $("#canvas").height();
+  var width = $("#canvas").width();
+  var xyOffset = $("#canvas").offset();
+  var topOffset = xyOffset.top;
+  var leftOffset = xyOffset.left;
+  var height1 = height/4;
+  var height3 = height1*3;
+  width2 = width/2;
+  var mouseX = parseInt(e.clientX);
+  var mouseY = parseInt(e.clientY);
+  if(mouseX>leftOffset && mouseX<width+leftOffset && mouseY>topOffset && mouseY<height1+topOffset) {
+    console.log("top");
+    this.y -= 80;
+  }else if(mouseX>leftOffset && mouseX<width+leftOffset && mouseY>height3+topOffset && mouseY<height+topOffset) {
+      console.log("bottom");
+      this.y += 80;
+    }else if(mouseX>leftOffset && mouseX<width2+leftOffset && mouseY>height1+topOffset && mouseY<height3+topOffset) {
+        console.log("left");
+        this.x -= 100;
+      }else if(mouseX>width2+leftOffset && mouseX<width+leftOffset && mouseY>height1+topOffset && mouseY<height3+topOffset) {
+          console.log("right");
+          this.x += 100;
+        }
+};
+
 //checkCollisions between an enemy and the player
 Player.prototype.checkCollision = function(enemy) {
     // check for collision between enemy and player
@@ -361,6 +387,7 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    player.handleMouseInput(e);
 });
 
 //gems
