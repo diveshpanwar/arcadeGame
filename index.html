@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arcade Game</title>
     <link href="https://fonts.googleapis.com/css?family=Artifika" rel="stylesheet">
     <!-- Bootstrap -->
@@ -56,7 +56,7 @@
     </div>
   </div>
 </div>
-    <div class="container-fluid">
+    <div class="container-fluid bg-warning text-warning">
       <h1 class="title text-center text-thick text-big">Arcade Game</h1>
       <div class="row" id="start">
         <div class="col-md-6 text-center">
@@ -72,15 +72,15 @@
         </div>
       </div>
 
-      <div class="row hideContainer" id="gameContainer">
+      <div class="row hideContainer bg-info" id="gameContainer">
         <div class="col-md-8 text-center" id="gameCanvas">
 
         </div>
-        <div class="col-md-2 text-center bg-success text-success text-thick pTB border" id="gameData1">
+        <div class="col-md-2 text-center text-success text-thick" id="gameData1">
           <h4>Player:<span id="playerName"></span></h4>
           <h4>Score:<span id="pScore"></span></h4>
         </div>
-        <div class="col-md-2 text-center bg-success text-success text-thick pTB border" id="gameData2">
+        <div class="col-md-2 text-center text-success text-thick" id="gameData2">
           <h4>Lives Left: <span id="pLives"></span></h4>
           <h4>Level: <span id="pLevel"></span></h4>
         </div>
