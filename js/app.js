@@ -129,7 +129,7 @@ var game = {
       $("#start .col-md-6:first select:last").append('<option value="'+sprite.sprite+'">'+sprite.name+'</option>');
     });
     $("#start .col-md-6:first").append('<button class="btn btn-success form-group" id="startBtn">Start Game</select>');
-    $("#start .col-md-6:first").append('<br><a class="text-center text-success cursor" id="instructions">View Instructions</a>');
+    $("#start .col-md-6:first").append('<br><a class="text-center text-success" id="instructions">View Instructions</a>');
     // $("#canvas").addClass("hideContainer");
     // making canvas bit more responsive
     $("#canvas").addClass("img-responsive");
@@ -147,9 +147,9 @@ var game = {
       gameScoreDetails.forEach(function(detail) {
         $("#scoreTable tbody").append(highScoreRow.replace('%name%',detail.pName).replace('%score%',detail.hScore).replace('%level%',detail.level));
       });
-
+      $("#scoreTable").append('<button id="clearScore" class="btn btn-danger hideContainer" onclick="game.clearScore()">Clear Score Data</button>');
       if(gameScoreDetails.length >1){
-        $("#scoreTable").append('<button id="clearScore" class="btn btn-danger">Clear Score Data</button>');
+        $("#clearScore").removeClass("hideContainer");
       }
     }
   },
@@ -274,7 +274,7 @@ Player.prototype.reset = function() {
   this.x = 202.5;
   this.y = 399;
 };
-
+//player update function
 Player.prototype.update = function() {
       // check if player reaches bottom, right or left of canvas boundary
       if (this.y > 463 ) {
@@ -349,7 +349,7 @@ Player.prototype.handleInput = function(keyPress) {
         this.y += 80;
     }
 };
-
+//mouse events for the smaller screens
 Player.prototype.handleMouseInput = function(e) {
   var height = $("#canvas").height();
   var width = $("#canvas").width();
@@ -474,7 +474,7 @@ Gems.prototype.checkCollision = function() {
         player.updateScore(); //function to check if player has won and basic update
     }
 };
-
+//this function will be called independent of the objects
 Gems.createGems = function() {
   //generate one gem at a time if number of gems > 1 then call collidingGems() function
   if(game.numOfGems<1) {

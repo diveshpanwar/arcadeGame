@@ -57,9 +57,4 @@ $(function(){
         player.handleMouseInput(e);
       }
     });
-
-    $("#clearScore").click(function() {
-      game.clearScore();
-    });
-
 });

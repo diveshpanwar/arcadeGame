@@ -22,9 +22,11 @@ body {
 .mt {
   margin-top: 10px;
 }
+/*set margins to auto*/
 .mauto {
   margin: auto;
 }
+/*set top border*/
 .borderTop {
   border-top: 1px solid #e5e5e5;
   padding: 5px auto;
@@ -32,6 +34,7 @@ body {
 .mTB {
   margin: 10px auto;
 }
+/*transform the cursor to pointer*/
 .cursor {
   cursor: pointer;
 }
