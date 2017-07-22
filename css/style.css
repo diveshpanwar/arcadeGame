@@ -45,3 +45,12 @@ body {
     font-size: 25px;
   }
 }
+
+.pTB {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.border {
+  border-radius: 3px;
+}
