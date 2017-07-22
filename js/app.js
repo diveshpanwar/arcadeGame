@@ -1,6 +1,9 @@
 // helping variable
 var highScoreTable = '<div class="center-block bg-info col-md-12 mt text-center bs-callout bs-callout-primary" id="scoreTable"><h4 class="text-center text-thick">High Scores</h4><table class="table table-hover"><thead><tr class="warning"><td>Player</td><td>Score</td><td>Level</td></tr></thead><tbody></table></div>';
 var highScoreRow = '<tr><td>%name%</td><td>%score%</td><td>%level%</td></tr>';
+// storage object
+var storage = window.localStorage;
+
 //game object to store basic game data
 var game = {
   "numOfGems": 0,
@@ -136,13 +139,27 @@ var game = {
   //display score table on the home screen
   displayScore: function() {
     $("#scoreTable").remove("#scoreTable");
+    if(storage.gameScoreDetails) {
+      gameScoreDetails = JSON.parse(storage.gameScoreDetails);
+    }
     if(gameScoreDetails.length != 0) {
       $("#start").append(highScoreTable);
       gameScoreDetails.forEach(function(detail) {
         $("#scoreTable tbody").append(highScoreRow.replace('%name%',detail.pName).replace('%score%',detail.hScore).replace('%level%',detail.level));
       });
+
+      if(gameScoreDetails.length >1){
+        $("#scoreTable").append('<button id="clearScore" class="btn btn-danger">Clear Score Data</button>');
+      }
     }
   },
+  //clear game score data
+  clearScore: function() {
+    window.localStorage.clear(); // clear local storage
+    gameScoreDetails.length = 1;
+    game.displayScore();
+  },
+
   //display time and the gems collected
   displayGameData : function() {
     $("#gameData1").append('<h4>Time:<span id="gameTime"></span></h4>');
@@ -310,7 +327,9 @@ Player.prototype.saveScore = function() {
   data.hScore = player.score;
   data.level = player.level;
   gameScoreDetails.push(data);
+  storage.gameScoreDetails = JSON.stringify(gameScoreDetails);
 };
+
 //render the playeer on the canvas
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);

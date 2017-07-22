@@ -22,6 +22,7 @@ $(function(){
       player.reset();
       allEnemies.length = 1;//reset the length of the enemy array
       allGems.length = 0;
+      allLives.length = 0;
       game.numOfGems = 0;
     });
 
@@ -31,6 +32,7 @@ $(function(){
       player.reset();
       allEnemies.length=1;//reset the length of the enemy array
       allGems.length = 0;
+      allLives.length = 0;
       game.numOfGems = 0;
       game.startGame();
     });
@@ -40,6 +42,7 @@ $(function(){
       player.reset();
       allEnemies.length=1;//reset the length of the enemy array
       allGems.length = 0;
+      allLives.length = 0;
       game.numOfGems = 0;
     });
 
@@ -53,6 +56,10 @@ $(function(){
         console.log(window.innerWidth);
         player.handleMouseInput(e);
       }
+    });
+
+    $("#clearScore").click(function() {
+      game.clearScore();
     });
 
 });
