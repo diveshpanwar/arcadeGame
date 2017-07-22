@@ -343,13 +343,13 @@ Player.prototype.handleMouseInput = function(e) {
   if(mouseX>leftOffset && mouseX<width+leftOffset && mouseY>topOffset && mouseY<height1+topOffset) {
     console.log("top");
     this.y -= 80;
-  }else if(mouseX>leftOffset && mouseX<width+leftOffset && mouseY>height3+topOffset && mouseY<height+topOffset) {
+  }else if(mouseX>leftOffset && mouseX<width+leftOffset && mouseY>height3+topOffset-50 && mouseY<height+topOffset) {
       console.log("bottom");
       this.y += 80;
-    }else if(mouseX>leftOffset && mouseX<width2+leftOffset && mouseY>height1+topOffset && mouseY<height3+topOffset) {
+    }else if(mouseX>leftOffset && mouseX<width2+leftOffset && mouseY>height1+topOffset && mouseY<height3+topOffset-50) {
         console.log("left");
         this.x -= 100;
-      }else if(mouseX>width2+leftOffset && mouseX<width+leftOffset && mouseY>height1+topOffset && mouseY<height3+topOffset) {
+      }else if(mouseX>width2+leftOffset && mouseX<width+leftOffset && mouseY>height1+topOffset && mouseY<height3-50+topOffset) {
           console.log("right");
           this.x += 100;
         }
