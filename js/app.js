@@ -61,15 +61,14 @@ var Game = function(){
     }
   ];
 };
+
+// count the game time and display it
   Game.prototype.gameTimeCounter = function() {
     // it tracks the time of the game in seconds
     this.gameTime = (Date.now() - this.startTime) / 1000;
-  };
-
-  //function to display the game time on the screen
-  Game.prototype.renderTime= function() {
     $("#gameTime").html(Math.floor(this.gameTime));
   };
+
 
   //set time interval for the creation of the next gem especially if more than one gem is displayed simultaneously
   Game.prototype.gemCreator = function() {
@@ -94,7 +93,6 @@ var Game = function(){
       alert("Please Enter a Player Name");
       return;
     }
-
     this.displayGameData();
     player.name = pName;
     player.sprite = sprite;
@@ -106,7 +104,6 @@ var Game = function(){
       }
         this.gameTime = 0;
         this.startTime = Date.now();
-      setInterval(this.renderTime, 1000);
       //set player properties according to the level and the data received
       player.init(this.levels[levelIndex]);
       init();
@@ -236,6 +233,7 @@ var Enemy = function(x,y,speed) {
 Enemy.prototype.render = function() {
     //calculate the game time
     game.gameTimeCounter();
+    // console.log(game.gameTime);
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -303,13 +301,13 @@ Player.prototype.updateLives = function() {
     $("#gameContainer").addClass("hideContainer");
     $('#winnerModal').modal('show');
   }
-  $("#pLives").html(player.lives);
+  $("#pLives").html(this.lives);
 };
 // updates the score of the player and also checks if the player has won or not
 Player.prototype.updateScore = function() {
-  $("#pScore").html(player.score);
+  $("#pScore").html(this.score);
   this.gemsCollected+=1;
-  $("#gemsCollected").html(player.gemsCollected);
+  $("#gemsCollected").html(this.gemsCollected);
   game.numOfGems-=1;
   if( this.gemsCollected >= this.maxGems) {
   $("#start").removeClass("hideContainer");
