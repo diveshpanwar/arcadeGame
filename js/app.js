@@ -14,50 +14,50 @@ var Game = function(){
   // various levels and their configurations
   this.levels= [
     {
-      "name":"Easy",
-      "index": "0",
-      "bugs": 2,
-      "lives":4,
-      "addLives":0,
-      "maxGems": 6
+      "NAME":"Easy",
+      "INDEX": "0",
+      "BUGS": 2,
+      "LIVES":4,
+      "ADDLIVES":0,
+      "MAXGEMS": 50
     },
     {
-      "name":"Medium",
-      "index": "1",
-      "bugs": 4,
-      "lives":6,
-      "addLives":1,
-      "maxGems": 4
+      "NAME":"Medium",
+      "INDEX": "1",
+      "BUGS": 4,
+      "LIVES":6,
+      "ADDLIVES":1,
+      "MAXGEMS": 100
     },
     {
-      "name":"Hard",
-      "index": "2",
-      "bugs": 6,
-      "lives":8,
-      "addLives":2,
-      "maxGems": 6
+      "NAME":"Hard",
+      "INDEX": "2",
+      "BUGS": 6,
+      "LIVES":8,
+      "ADDLIVES":2,
+      "MAXGEMS": 150
     }
   ];
   this.playerSprites= [
     {
-      "name": "char-boy",
-      "sprite": "images/char-boy.png"
+      "NAME": "char-boy",
+      "SPRITE": "images/char-boy.png"
     },
     {
-      "name": "char-cat-girl",
-      "sprite": "images/char-cat-girl.png"
+      "NAME": "char-cat-girl",
+      "SPRITE": "images/char-cat-girl.png"
     },
     {
-      "name": "char-horn-girl",
-      "sprite": "images/char-horn-girl.png"
+      "NAME": "char-horn-girl",
+      "SPRITE": "images/char-horn-girl.png"
     },
     {
-      "name": "char-pink-girl",
-      "sprite": "images/char-pink-girl.png"
+      "NAME": "char-pink-girl",
+      "SPRITE": "images/char-pink-girl.png"
     },
     {
-      "name": "char-princess-girl",
-      "sprite": "images/char-princess-girl.png"
+      "NAME": "char-princess-girl",
+      "SPRITE": "images/char-princess-girl.png"
     }
   ];
 };
@@ -98,7 +98,7 @@ var Game = function(){
     this.displayGameData();
     player.name = pName;
     player.sprite = sprite;
-      var numBugs = this.levels[levelIndex].bugs;
+      var numBugs = this.levels[levelIndex].BUGS;
       //create bugs depending on the levels
       for(var i = 0; i<numBugs-1; i++) {
         var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
@@ -123,11 +123,11 @@ var Game = function(){
     $("#start .col-md-6:first").append('<input class="form-control form-group" id="pName" placeholder="Player Name">');
     $("#start .col-md-6:first").append('<select class="form-control form-group" id="level"></select>');
     this.levels.forEach(function(level) {
-      $("#start .col-md-6:first select:last").append('<option value="'+level.index+'">'+level.name+'</option>');
+      $("#start .col-md-6:first select:last").append('<option value="'+level.INDEX+'">'+level.NAME+'</option>');
     });
     $("#start .col-md-6:first").append('<select class="form-control form-group" id="pSprite"></select>');
     this.playerSprites.forEach(function(sprite) {
-      $("#start .col-md-6:first select:last").append('<option value="'+sprite.sprite+'">'+sprite.name+'</option>');
+      $("#start .col-md-6:first select:last").append('<option value="'+sprite.SPRITE+'">'+sprite.NAME+'</option>');
     });
     $("#start .col-md-6:first").append('<button class="btn btn-success form-group" id="startBtn">Start Game</select>');
     $("#start .col-md-6:first").append('<br><a class="text-center text-success" id="instructions">View Instructions</a>');
@@ -259,10 +259,10 @@ var Player = function(x,y) {
 
 //update player properties according to the game object passed
 Player.prototype.init = function(gameObj) {
-  this.level = gameObj.name;
-  this.maxGems = gameObj.maxGems;
-  this.lives = gameObj.lives;
-  this.addLives = gameObj.addLives;
+  this.level = gameObj.NAME;
+  this.maxGems = gameObj.MAXGEMS;
+  this.lives = gameObj.LIVES;
+  this.addLives = gameObj.ADDLIVES;
 };
 
 //reset player details
@@ -393,8 +393,6 @@ Player.prototype.checkCollision = function(enemy) {
             console.log('You are out of canvas and so you Died!');
             this.updateLives();
         }
-
-
 };
 
 // This listens for key presses and sends the keys to your
