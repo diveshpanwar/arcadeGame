@@ -5,14 +5,14 @@ var highScoreRow = '<tr><td>%name%</td><td>%score%</td><td>%level%</td></tr>';
 var storage = window.localStorage;
 
 //game object to store basic game data
-var game = {
-  "numOfGems": 0,
-  "startTime": Date.now(),
-  "gameTime": 0,
-  "nextGemCreateTime": 0,
-  "allGems":[],
+var Game = function(){
+  this.numOfGems= 0;
+  this.startTime= Date.now();
+  this.gameTime= 0;
+  this.nextGemCreateTime= 0;
+  this.allGems=[];
   // various levels and their configurations
-  "levels": [
+  this.levels= [
     {
       "name":"Easy",
       "index": "0",
@@ -37,8 +37,8 @@ var game = {
       "addLives":2,
       "maxGems": 6
     }
-  ],
-  "playerSprites": [
+  ];
+  this.playerSprites= [
     {
       "name": "char-boy",
       "sprite": "images/char-boy.png"
@@ -59,32 +59,33 @@ var game = {
       "name": "char-princess-girl",
       "sprite": "images/char-princess-girl.png"
     }
-  ],
-  gameTimeCounter : function() {
+  ];
+};
+  Game.prototype.gameTimeCounter = function() {
     // it tracks the time of the game in seconds
-    game.gameTime = (Date.now() - game.startTime) / 1000;
-  },
+    this.gameTime = (Date.now() - this.startTime) / 1000;
+  };
 
   //function to display the game time on the screen
-  renderTime: function() {
-    $("#gameTime").html(Math.floor(game.gameTime));
-  },
+  Game.prototype.renderTime= function() {
+    $("#gameTime").html(Math.floor(this.gameTime));
+  };
 
   //set time interval for the creation of the next gem especially if more than one gem is displayed simultaneously
-  gemCreator : function() {
+  Game.prototype.gemCreator = function() {
     var gemCreateInterval = window.setInterval(Gems.createGems, 1000);
-  },
+  };
   // reset game data
-  reset: function() {
-    game.numOfGems = 0;
-    game.startTime = Date.now();
-    game.gameTime = 0;
-    game.nextGemCreateTime = 0;
+  Game.prototype.reset= function() {
+    this.numOfGems = 0;
+    this.startTime = Date.now();
+    this.gameTime = 0;
+    this.nextGemCreateTime = 0;
     $("#gameData1 h4:last").remove();
     $("#gameData2 h4:last").remove();
-  },
+  };
   //initates the game by setting the values
-  startGame  : function() {
+  Game.prototype.startGame  = function() {
     var pName = $("#pName").val();
     var sprite = $("#pSprite option:selected").val();
     var level = $("#level option:selected").text();
@@ -94,20 +95,20 @@ var game = {
       return;
     }
 
-    game.displayGameData();
+    this.displayGameData();
     player.name = pName;
     player.sprite = sprite;
-      var numBugs = game.levels[levelIndex].bugs;
+      var numBugs = this.levels[levelIndex].bugs;
       //create bugs depending on the levels
       for(var i = 0; i<numBugs-1; i++) {
         var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
         allEnemies.push(enemy);
       }
-        game.gameTime = 0;
-        game.startTime = Date.now();
-      setInterval(game.renderTime, 1000);
+        this.gameTime = 0;
+        this.startTime = Date.now();
+      setInterval(this.renderTime, 1000);
       //set player properties according to the level and the data received
-      player.init(game.levels[levelIndex]);
+      player.init(this.levels[levelIndex]);
       init();
       //display main canvas and relevant data
       $("#start").addClass("hideContainer");
@@ -116,16 +117,16 @@ var game = {
       $("#pLevel").html(level);
       $("#pLives").html(player.lives);
       $("#pScore").html(player.score);
-  },
+  };
   //user settings
-  display: function(){
+  Game.prototype.display= function(){
     $("#start .col-md-6:first").append('<input class="form-control form-group" id="pName" placeholder="Player Name">');
     $("#start .col-md-6:first").append('<select class="form-control form-group" id="level"></select>');
-    game.levels.forEach(function(level) {
+    this.levels.forEach(function(level) {
       $("#start .col-md-6:first select:last").append('<option value="'+level.index+'">'+level.name+'</option>');
     });
     $("#start .col-md-6:first").append('<select class="form-control form-group" id="pSprite"></select>');
-    game.playerSprites.forEach(function(sprite) {
+    this.playerSprites.forEach(function(sprite) {
       $("#start .col-md-6:first select:last").append('<option value="'+sprite.sprite+'">'+sprite.name+'</option>');
     });
     $("#start .col-md-6:first").append('<button class="btn btn-success form-group" id="startBtn">Start Game</select>');
@@ -134,10 +135,10 @@ var game = {
     // making canvas bit more responsive
     $("#canvas").addClass("img-responsive");
     $("#canvas").addClass("mauto");
-    game.displayScore();
-  },
+    this.displayScore();
+  };
   //display score table on the home screen
-  displayScore: function() {
+  Game.prototype.displayScore= function() {
     $("#scoreTable").remove("#scoreTable");
     if(storage.gameScoreDetails) {
       gameScoreDetails = JSON.parse(storage.gameScoreDetails);
@@ -152,20 +153,19 @@ var game = {
         $("#clearScore").removeClass("hideContainer");
       }
     }
-  },
+  };
   //clear game score data
-  clearScore: function() {
+  Game.prototype.clearScore= function() {
     window.localStorage.clear(); // clear local storage
     gameScoreDetails.length = 1;
-    game.displayScore();
-  },
+    this.displayScore();
+  };
 
   //display time and the gems collected
-  displayGameData : function() {
+  Game.prototype.displayGameData = function() {
     $("#gameData1").append('<h4>Time:<span id="gameTime"></span></h4>');
     $("#gameData2").append('<h4>Gems Collected:<span id="gemsCollected">0</span></h4>');
-  }
-};
+  };
 //store the winner names at run time
 var gameScoreDetails = [
     {
@@ -323,9 +323,9 @@ Player.prototype.updateScore = function() {
 // If player chooses to save his score than save it
 Player.prototype.saveScore = function() {
   var data = {};
-  data.pName = player.name;
-  data.hScore = player.score;
-  data.level = player.level;
+  data.pName = this.name;
+  data.hScore = this.score;
+  data.level = this.level;
   gameScoreDetails.push(data);
   storage.gameScoreDetails = JSON.stringify(gameScoreDetails);
 };
@@ -516,6 +516,7 @@ LifeLines.prototype.checkCollision = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var game = new Game();
 var allEnemies = [];
 var allGems = [];
 var allLives = [];
